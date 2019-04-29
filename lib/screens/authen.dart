@@ -11,8 +11,41 @@ class _AuthenState extends State<Authen> {
         style: TextStyle(
             fontSize: 35.0,
             fontWeight: FontWeight.bold,
-            color: Colors.orange,
+            color: Colors.blue[600],
             fontFamily: 'IndieFlower'));
+  }
+
+  Widget signupButton() {
+    return RaisedButton(
+      color: Colors.greenAccent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Text('Sign Up'),
+      onPressed: () {},
+    );
+  }
+
+  Widget signButton() {
+    return RaisedButton(
+      color: Colors.yellowAccent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Text('Sign In'),
+      onPressed: () {},
+    );
+  }
+
+  Widget emailTextFormField() {
+    return TextFormField(
+      decoration:
+          InputDecoration(labelText: 'Email :', hintText: 'you@email.com'),
+    );
+  }
+
+  Widget passWordTextFormField() {
+    return TextFormField(
+      obscureText: true,
+      decoration:
+          InputDecoration(labelText: 'Password :', hintText: 'your Password'),
+    );
   }
 
   Widget showLogo() {
@@ -22,11 +55,12 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [Colors.greenAccent, Colors.white],
-                begin: Alignment(0, -1))),
+                begin: Alignment(-1, -1))),
         padding: EdgeInsets.only(top: 100.0),
         alignment: Alignment(0, -1),
         child: Column(
@@ -39,6 +73,33 @@ class _AuthenState extends State<Authen> {
             Container(
               margin: EdgeInsets.only(top: 15.0),
               child: showAppName(),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 50.0, right: 50.0),
+              child: emailTextFormField(),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 50.0, right: 50.0),
+              child: passWordTextFormField(),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                      child: signButton(),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                      child: signupButton(),
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
