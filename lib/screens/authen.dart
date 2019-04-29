@@ -6,11 +6,20 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+
+
+  Widget showAppName(){
+    return Text('Most Flutter');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "asd",
-      home: Text("asdasdas"),
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(top: 100.0),
+        alignment: Alignment(0, -1),
+        child: showAppName(),
+      ),
     );
   }
 }
