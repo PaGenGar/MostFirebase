@@ -8,6 +8,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   //Explicit
   final formKey = GlobalKey<FormState>();
+  String nameString, emailString, passWordString;
 
   Widget passTeatFormField() {
     return TextFormField(
@@ -23,9 +24,12 @@ class _RegisterState extends State<Register> {
             color: Colors.orange,
           )),
       validator: (String value) {
-        if (value.length<=5) {
+        if (value.length <= 5) {
           return 'Please Type Password more Charactor';
         }
+      },
+      onSaved: (String value) {
+        passWordString=value;
       },
     );
   }
@@ -46,6 +50,9 @@ class _RegisterState extends State<Register> {
         if (value.length == 0) {
           return 'Plase Full Name in the blank';
         }
+      },
+      onSaved: (String value) {
+        nameString = value;
       },
     );
   }
@@ -69,6 +76,9 @@ class _RegisterState extends State<Register> {
           return 'กรุณากรอก Email ให้ตรง Format';
         }
       },
+      onSaved: (String value) {
+        emailString = value;
+      },
     );
   }
 
@@ -78,7 +88,10 @@ class _RegisterState extends State<Register> {
       tooltip: 'Upload To Firebase',
       onPressed: () {
         print('you click upload');
-        if (formKey.currentState.validate()) {}
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          print('name = $nameString,email = $emailString,password = $passWordString');
+        }
       },
     );
   }
