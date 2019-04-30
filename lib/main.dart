@@ -11,8 +11,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Most Firebase",
-      home: Register(),
+      home: Authen(),
     );
   }
 }

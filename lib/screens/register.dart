@@ -52,11 +52,20 @@ Widget emailTextFormField() {
 }
 
 class _RegisterState extends State<Register> {
+
+  Widget uploadButton() {
+    return IconButton(
+      icon: Icon(Icons.cloud_upload),
+      tooltip: 'Upload To Firebase',onPressed: (){print('you click upload');},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(backgroundColor: Colors.redAccent,
         title: Text('Register'),
+        actions: <Widget>[uploadButton()],
       ),
       body: Container(
         decoration: BoxDecoration(

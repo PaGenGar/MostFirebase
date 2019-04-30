@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/register.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -15,12 +16,18 @@ class _AuthenState extends State<Authen> {
             fontFamily: 'IndieFlower'));
   }
 
-  Widget signupButton() {
-    return RaisedButton(
+  Widget signupButton(BuildContext context) {
+    return RaisedButton.icon(
+      icon: Icon(Icons.system_update_alt),
+      label: Text('Sing UP'),
       color: Colors.greenAccent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Text('Sign Up'),
-      onPressed: () {},
+      onPressed: () {
+        print('on click sign up');
+        var registerRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Register());
+            Navigator.of(context).push(registerRoute);
+      },
     );
   }
 
@@ -95,7 +102,7 @@ class _AuthenState extends State<Authen> {
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                      child: signupButton(),
+                      child: signupButton(context),
                     ),
                   )
                 ],
