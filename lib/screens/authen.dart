@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../screens/myservice.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -22,6 +23,37 @@ class _AuthenState extends State<Authen> {
   //For firebase
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  //For SnackBar
+  final snackBarKey = GlobalKey<ScaffoldState>();
+
+  //Inital Method
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('InitState Work');
+
+    checkStatus(context);
+  }
+
+  Future checkStatus(BuildContext context) async {
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+    if (firebaseUser != null) {
+      print(firebaseUser.toString());
+      goToService(context);
+    }else{
+      print(firebaseUser.toString());
+    }
+  }
+
+  void goToService(BuildContext context) {
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => MyService());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+  }
+
+  //Aboute Widget medthod
   Widget showAppName() {
     return Text('Most Flutter',
         style: TextStyle(
@@ -46,7 +78,7 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  Widget signButton() {
+  Widget signButton(BuildContext context) {
     return RaisedButton.icon(
       icon: Icon(
         Icons.account_box,
@@ -59,22 +91,42 @@ class _AuthenState extends State<Authen> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print('Email = $emailString, Password = $passwordString');
-          checkAuthen();
+          checkAuthen(context);
         }
       },
     );
   }
 
-  void checkAuthen() async {
+  void checkAuthen(BuildContext context) async {
     FirebaseUser firebaseUser = await firebaseAuth
         .signInWithEmailAndPassword(
             email: emailString, password: passwordString)
         .then((objvalue) {
       print('Success Login ==> ${objvalue.toString()}');
+
+      // Route With Arrow Back
+      var myservice =
+          MaterialPageRoute(builder: (BuildContext context) => MyService());
+      Navigator.of(context)
+          .pushAndRemoveUntil(myservice, (Route<dynamic> route) => false);
     }).catchError((objvalue) {
-      String error =objvalue.message;
+      String error = objvalue.message;
       print('EROR Massage ====> $error');
+      showSnackbar(error);
     });
+  }
+
+  void showSnackbar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 7),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      ),
+    );
+    snackBarKey.currentState.showSnackBar(snackBar);
   }
 
   Widget emailTextFormField() {
@@ -117,6 +169,7 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: snackBarKey,
         resizeToAvoidBottomPadding: false,
         body: Form(
           key: formKey,
@@ -153,7 +206,7 @@ class _AuthenState extends State<Authen> {
                       Expanded(
                         child: Container(
                           margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                          child: signButton(),
+                          child: signButton(context),
                         ),
                       ),
                       Expanded(
