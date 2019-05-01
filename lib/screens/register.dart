@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
@@ -10,7 +11,12 @@ class _RegisterState extends State<Register> {
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passWordString;
 
-  
+  //For Firebase
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  //For Snackbar
+  final snackBarKey = GlobalKey<ScaffoldState>();
+
   Widget passTeatFormField() {
     return TextFormField(
       obscureText: true,
@@ -30,7 +36,7 @@ class _RegisterState extends State<Register> {
         }
       },
       onSaved: (String value) {
-        passWordString=value;
+        passWordString = value;
       },
     );
   }
@@ -58,7 +64,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget emailTextFormField() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  Widget emailTextFormField() {
     return TextFormField(
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
@@ -91,15 +97,44 @@ class _RegisterState extends State<Register> {
         print('you click upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('name = $nameString,email = $emailString,password = $passWordString');
+          print(
+              'name = $nameString,email = $emailString,password = $passWordString');
+          uploadValueToFirebase();
         }
       },
     );
   }
 
+  void uploadValueToFirebase() async {
+    FirebaseUser firebaseUser = await firebaseAuth
+        .createUserWithEmailAndPassword(
+            email: emailString, password: passWordString)
+        .then((user) {
+      print('Register Success With ===>> $user');
+    }).catchError((error) {
+      String errorString = error.message;
+      print('ERROR ============================>>>>>>>>>>>>>>>>> $errorString');
+      showSnackBar(errorString);
+    });
+  }
+
+  void showSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      duration: Duration(seconds: 7),
+      backgroundColor: Colors.redAccent,
+      content: Text(messageString),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      ),
+    );
+    snackBarKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: snackBarKey,
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.redAccent,
