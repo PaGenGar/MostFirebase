@@ -10,6 +10,7 @@ class _RegisterState extends State<Register> {
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passWordString;
 
+  
   Widget passTeatFormField() {
     return TextFormField(
       obscureText: true,
@@ -57,7 +58,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget emailTextFormField() {
+  Widget emailTextFormField() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     return TextFormField(
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
