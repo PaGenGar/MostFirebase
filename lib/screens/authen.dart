@@ -15,6 +15,9 @@ class _AuthenState extends State<Authen> {
   String titleEmailFail = 'กรุณากรอกรูปแบบ Email ให้ถูกต้อง';
   String titlePasswordFail = 'Password ต้องมีมากกว่า 6 ตัวอักษร';
 
+  //Explicit
+  String emailString, passwordString;
+
   Widget showAppName() {
     return Text('Most Flutter',
         style: TextStyle(
@@ -49,7 +52,10 @@ class _AuthenState extends State<Authen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       onPressed: () {
         print('You click Sign In');
-        if (formKey.currentState.validate()) {}
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          print('Email = $emailString, Password = $passwordString');
+        }
       },
     );
   }
@@ -65,6 +71,9 @@ class _AuthenState extends State<Authen> {
           return titleEmailFail;
         }
       },
+      onSaved: (String value) {
+        emailString = value;
+      },
     );
   }
 
@@ -74,9 +83,12 @@ class _AuthenState extends State<Authen> {
       decoration:
           InputDecoration(labelText: 'Password :', hintText: 'your Password'),
       validator: (String value) {
-        if (value.length<=5) {
+        if (value.length <= 5) {
           return titlePasswordFail;
         }
+      },
+      onSaved: (String value) {
+        passwordString=value;
       },
     );
   }
