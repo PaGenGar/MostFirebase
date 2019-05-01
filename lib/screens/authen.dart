@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -17,6 +18,9 @@ class _AuthenState extends State<Authen> {
 
   //Explicit
   String emailString, passwordString;
+
+  //For firebase
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   Widget showAppName() {
     return Text('Most Flutter',
@@ -55,9 +59,22 @@ class _AuthenState extends State<Authen> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print('Email = $emailString, Password = $passwordString');
+          checkAuthen();
         }
       },
     );
+  }
+
+  void checkAuthen() async {
+    FirebaseUser firebaseUser = await firebaseAuth
+        .signInWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((objvalue) {
+      print('Success Login ==> ${objvalue.toString()}');
+    }).catchError((objvalue) {
+      String error =objvalue.message;
+      print('EROR Massage ====> $error');
+    });
   }
 
   Widget emailTextFormField() {
@@ -88,7 +105,7 @@ class _AuthenState extends State<Authen> {
         }
       },
       onSaved: (String value) {
-        passwordString=value;
+        passwordString = value;
       },
     );
   }
